@@ -25,8 +25,8 @@ const Navbar = () => {
                   <i className="fa fa-caret-down" />
               </a>
               <div className="nav-submenu">
-                <a className="nav-link">My articles</a>
-                <a className="nav-link">Logout</a>
+                <a className="nav-link" style={{color: 'black'}}>My articles</a>
+                <a className="nav-link" style={{color: 'black'}}>Logout</a>
               </div>
             </li>
             <li className="nav-item">
