@@ -12,21 +12,58 @@ import Register from "./components/Register";
 import SingleArticle from "./components/SingleArticle";
 import CreateArticle from "./components/CreateArticle";
 
-const Main = withRouter(location => {
-  console.log("location", location);
+
+class App extends React.Component {   
+  
+  constructor(){
+    super();
+    
+    this.state = {
+      authUser : null
+    };
+  }
+
+  componentWillMount(){
+    const user = localStorage.getItem('user');
+    console.log(user);
+
+    if(user){
+      this.setState({
+        authUser : JSON.parse(user)
+      });
+    }
+  }
+
+  setAuthUser = (authUser) =>{
+    this.setState({
+      authUser
+    });
+  }
+
+  render(){
+    const { location } = this.props;
+    return (
+      <div>
+        {location.pathname !== "/login" &&
+          location.pathname !== "/register" && <Navbar authUser = {this.state.authUser}/>}
+
+        <Header/>
+        
+        <Route exact path="/" component={Welcome} />
+        <Route path="/articles/create" component={CreateArticle} />
+        <Route path="/login" component={Login} />
+        <Route path="/register" render={(props) => <Register {...props} setAuthUser={this.setAuthUser} />} />
+        <Route path="/article/:id" component={SingleArticle} />
+        {location.pathname !== "/login" &&
+          location.pathname !== "/register" && <Footer />}
+      </div>
+    );
+  }
+}
+
+const Main = withRouter((props) => {  
   return (
-    <div>
-      {location.location.pathname !== "/login" &&
-        location.location.pathname !== "/register" && <Navbar />}
-      <Header/>
-      <Route exact path="/" component={Welcome} />
-      <Route path="/articles/create" component={CreateArticle} />
-      <Route path="/login" component={Login} />
-      <Route path="/register" component={Register} />
-      <Route path="/article/:id" component={SingleArticle} />
-      {location.location.pathname !== "/login" &&
-        location.location.pathname !== "/register" && <Footer />}
-    </div>
+    <App {...props} />
   );
 });
 
