@@ -12,6 +12,8 @@ import Register from "./components/Register";
 import SingleArticle from "./components/SingleArticle";
 import CreateArticle from "./components/CreateArticle";
 
+import  UserService  from './services/userService';
+
 
 class App extends React.Component {   
   
@@ -52,7 +54,10 @@ class App extends React.Component {
         <Route exact path="/" component={Welcome} />
         <Route path="/articles/create" component={CreateArticle} />
         <Route path="/login" component={Login} />
-        <Route path="/register" render={(props) => <Register {...props} setAuthUser={this.setAuthUser} />} />
+        <Route path="/register" render={(props) => <Register {...props} 
+                                                      registerUser={this.props.userService.registerUser}
+                                                      setAuthUser={this.setAuthUser} />} 
+                                                      />
         <Route path="/article/:id" component={SingleArticle} />
         {location.pathname !== "/login" &&
           location.pathname !== "/register" && <Footer />}
@@ -63,7 +68,7 @@ class App extends React.Component {
 
 const Main = withRouter((props) => {  
   return (
-    <App {...props} />
+    <App userService={new UserService()} {...props} />
   );
 });
 
